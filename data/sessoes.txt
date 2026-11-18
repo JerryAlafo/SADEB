@@ -15,3 +15,4 @@
 {"token":"a69a002bac1bc595981e990efda6a61d9fc60ee8ff1651a3d28cc0dd2e3bebf3","utilizadorId":"0fdf41af-88ca-4a35-9227-2a1c0a902575","expiraEm":"2026-11-18T23:49:54.531Z","criadaEm":"2026-11-18T11:49:54.531Z"}
 {"token":"5c14ee57e4aba07e9cc6c853027c6d515c75ecdc3d87b10c6c6741ba6a2ad48a","utilizadorId":"72b980c4-a334-456a-af02-9d2601b761c9","expiraEm":"2026-11-18T23:49:53.182Z","criadaEm":"2026-11-18T11:49:53.182Z"}
 {"token":"71fb7604ca200055accee744fe5cb0b86ecbfb0793a2cffca8bbca882c2debd2","utilizadorId":"0fdf41af-88ca-4a35-9227-2a1c0a902575","expiraEm":"2026-11-18T23:49:53.236Z","criadaEm":"2026-11-18T11:49:53.236Z"}
+{"token":"75aa797bb6394c57bf37d5145ef2c67e69f307cf38c638eb7e6ef2fcde4be664","utilizadorId":"cd7e3715-aadc-4359-aaa2-356fbd72f562","expiraEm":"2026-11-18T23:49:54.522Z","criadaEm":"2026-11-18T11:49:54.522Z"}
