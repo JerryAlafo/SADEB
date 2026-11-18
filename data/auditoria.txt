@@ -17,3 +17,4 @@
 {"id":"9399e46a-7475-411c-81ff-c3e511ad2225","em":"2026-11-18T11:50:00.872Z","utilizador":"Administrador do Sistema","accao":"login"}
 {"id":"5d9b0059-3567-49fe-9247-865a90b9250f","em":"2026-11-18T11:50:02.364Z","utilizador":"Prof. Arsénio Mindu","accao":"login"}
 {"id":"0d785775-a8c3-445e-9d72-e1d3a1fef5f9","em":"2026-11-18T11:50:07.711Z","utilizador":"Joana Matsinhe","accao":"login"}
+{"id":"2286041e-9221-4543-83d9-4801ce0ccd93","em":"2026-11-18T11:50:13.627Z","utilizador":"Prof. Arsénio Mindu","accao":"login"}
