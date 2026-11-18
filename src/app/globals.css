@@ -1,26 +1,228 @@
 @import "tailwindcss";
 
+/* Modo escuro controlado pela classe .dark no <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ─────────────────────────────────────────────────────────────
+   Paleta SADEB — azul-petróleo institucional + latão (náutico)
+   ───────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f3f4f6;
+  --surface: #ffffff;
+  --surface-2: #f7f8fa;
+  --line: #e2e5ea;
+  --line-strong: #c8ced6;
+  --fg: #121820;
+  --muted: #566170;
+  --subtle: #8a94a1;
+
+  --primary: #0f4c5c;
+  --primary-hover: #0a3a47;
+  --primary-fg: #ffffff;
+  --primary-soft: #e5eff1;
+
+  --accent: #a3742a;
+  --accent-soft: #f5ecdc;
+
+  --success: #2b7a53;
+  --success-soft: #e5f2ea;
+  --warning: #9c650b;
+  --warning-soft: #faf0dc;
+  --danger: #b03a3a;
+  --danger-soft: #f8e6e6;
+  --info: #2c5b98;
+  --info-soft: #e7edf6;
+
+  --sidebar: #0c2129;
+  --sidebar-fg: #c2d0d5;
+  --sidebar-muted: #6f878f;
+  --sidebar-line: #173540;
+  --sidebar-active: #15404c;
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0a1013;
+  --surface: #10181c;
+  --surface-2: #142026;
+  --line: #1f2d35;
+  --line-strong: #2d3f49;
+  --fg: #e4eaed;
+  --muted: #98a5ae;
+  --subtle: #66737d;
+
+  --primary: #3a9fb2;
+  --primary-hover: #52b4c6;
+  --primary-fg: #04161b;
+  --primary-soft: #102e37;
+
+  --accent: #d2a65c;
+  --accent-soft: #2b2414;
+
+  --success: #4fb486;
+  --success-soft: #0f271c;
+  --warning: #d8a242;
+  --warning-soft: #2a2010;
+  --danger: #e06b6b;
+  --danger-soft: #2d1515;
+  --info: #739fdb;
+  --info-soft: #132135;
+
+  --sidebar: #081316;
+  --sidebar-fg: #b4c3c8;
+  --sidebar-muted: #5d7279;
+  --sidebar-line: #13252b;
+  --sidebar-active: #123039;
+
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-fg: var(--sidebar-fg);
+  --color-sidebar-muted: var(--sidebar-muted);
+  --color-sidebar-line: var(--sidebar-line);
+  --color-sidebar-active: var(--sidebar-active);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  overflow-x: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "tnum" 0;
+}
+
+::selection {
+  background: var(--primary-soft);
+}
+
+/* Scrollbar discreta */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+}
+
+/* ─── Componentes base (cantos rectos, 1px de borda) ──────── */
+@utility cartao {
+  @apply rounded border border-line bg-surface;
+}
+@utility btn {
+  @apply inline-flex h-10 items-center justify-center gap-2 rounded px-4 text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none disabled:opacity-50;
+}
+@utility btn-sm {
+  @apply h-8 px-3 text-xs;
+}
+@utility btn-primario {
+  @apply btn bg-primary text-primary-fg hover:bg-primary-hover;
+}
+@utility btn-secundario {
+  @apply btn border border-line-strong bg-surface text-fg hover:bg-surface-2;
+}
+@utility btn-sucesso {
+  @apply btn bg-success text-white hover:opacity-90 dark:text-bg;
+}
+@utility btn-perigo {
+  @apply btn bg-danger text-white hover:opacity-90 dark:text-bg;
+}
+@utility btn-fantasma {
+  @apply btn text-primary hover:bg-primary-soft;
+}
+@utility tabela {
+  @apply w-full text-left text-sm;
+  & th {
+    @apply h-10 border-b border-line bg-surface-2 px-4 text-[11px] font-semibold tracking-wider whitespace-nowrap text-muted uppercase;
+  }
+  & td {
+    @apply border-b border-line px-4 py-3 align-middle;
+  }
+  & tbody tr:last-child td {
+    @apply border-b-0;
+  }
+  & tbody tr {
+    @apply transition-colors hover:bg-surface-2;
+  }
+}
+
+/* Inputs com label flutuante (mesmo padrão dos backoffices) */
+.date-hide-placeholder[data-has-value]::-webkit-datetime-edit {
+  color: inherit;
+}
+.date-hide-placeholder:not([data-has-value])::-webkit-datetime-edit {
+  color: transparent;
+}
+.date-hide-placeholder:focus::-webkit-datetime-edit {
+  color: inherit;
+}
+input:not([data-has-value]):not(:focus):-webkit-autofill {
+  -webkit-text-fill-color: transparent;
+}
+input[data-has-value]:-webkit-autofill,
+input:focus:-webkit-autofill {
+  -webkit-text-fill-color: currentColor;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.55;
+}
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* ─── Carregamento: esqueleto com brilho e barra de progresso ─── */
+.esqueleto {
+  background: linear-gradient(90deg, var(--surface-2) 0%, var(--line) 50%, var(--surface-2) 100%);
+  background-size: 200% 100%;
+  animation: brilho 1.4s ease-in-out infinite;
+}
+@keyframes brilho {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+.barra-progresso {
+  animation: progresso 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes progresso {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .esqueleto, .barra-progresso { animation-duration: 3s; }
 }
