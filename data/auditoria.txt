@@ -7,3 +7,4 @@
 {"id":"b25bc791-abf7-4464-84a2-ea53f3fd3274","em":"2026-11-18T11:44:02.850Z","utilizador":"Administrador do Sistema","accao":"login"}
 {"id":"d1dc389f-b19d-4196-b921-439979aa6e3c","em":"2026-11-18T11:44:06.071Z","utilizador":"Prof. Arsénio Mindu","accao":"login"}
 {"id":"8502b80e-cddc-4b59-a866-67f93a2ca1b0","em":"2026-11-18T11:44:09.482Z","utilizador":"Prof. Arsénio Mindu","accao":"login"}
+{"id":"2d061ca4-a30d-4166-8ee6-5f322ee086f2","em":"2026-11-18T11:44:10.782Z","utilizador":"Joana Matsinhe","accao":"login"}
