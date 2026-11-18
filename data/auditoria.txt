@@ -2,3 +2,4 @@
 {"id":"f06dccf9-58c1-4caa-a6c0-ad575ca306b9","em":"2026-11-18T11:35:32.048Z","utilizador":"Administrador do Sistema","accao":"login"}
 {"id":"d59b7458-6c77-4e1c-adc9-cc7a91df6d9e","em":"2026-11-18T11:35:37.816Z","utilizador":"Prof. Arsénio Mindu","accao":"login"}
 {"id":"37abfa3f-4650-445f-8e30-a5178546f01e","em":"2026-11-18T11:35:43.582Z","utilizador":"Joana Matsinhe","accao":"login"}
+{"id":"de19bf03-3407-4fbb-ac0f-8f3cbbef780c","em":"2026-11-18T11:36:56.426Z","utilizador":"Prof. Arsénio Mindu","accao":"login"}
