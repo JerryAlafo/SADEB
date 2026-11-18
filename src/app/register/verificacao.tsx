@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Spinner } from "@/components/carregamento";
 import { useI18n } from "@/components/i18n-provider";
 import { Aviso } from "@/components/ui";
-import { fmt } from "@/lib/i18n";
+import { fmt, type Dicionario } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { VerificacaoPublica } from "@/lib/verificacao";
 import { FormularioRegisto } from "./formulario";
@@ -49,49 +49,117 @@ function carregarScript(src: string) {
   });
 }
 
-/** Caixa clicável para escolher/fotografar uma imagem, com pré-visualização. */
-function SeletorImagem({
-  rotulo,
-  ficheiro,
-  onEscolher,
-  textoEscolher,
-  textoTrocar,
-}: {
-  rotulo: string;
-  ficheiro: File | null;
-  onEscolher: (f: File | null) => void;
-  textoEscolher: string;
-  textoTrocar: string;
-}) {
+type TextosCaptura = Dicionario["verificacao"];
+
+/**
+ * Fotografia do documento: a câmara é a opção principal (vídeo ao vivo + "Capturar");
+ * anexar um ficheiro fica como alternativa. Em telemóvel usa a câmara traseira.
+ */
+function CapturaDocumento({ rotulo, ficheiro, onEscolher, tv }: { rotulo: string; ficheiro: File | null; onEscolher: (f: File | null) => void; tv: TextosCaptura }) {
+  const [aberta, setAberta] = useState(false);
+  const [erroCamera, setErroCamera] = useState<string | null>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  const stream = useRef<MediaStream | null>(null);
+  const anexo = useRef<HTMLInputElement>(null);
   const previa = useMemo(() => (ficheiro ? URL.createObjectURL(ficheiro) : null), [ficheiro]);
   useEffect(() => () => {
     if (previa) URL.revokeObjectURL(previa);
   }, [previa]);
+
+  const fechar = useCallback(() => {
+    stream.current?.getTracks().forEach((t) => t.stop());
+    stream.current = null;
+    setAberta(false);
+  }, []);
+  useEffect(() => fechar, [fechar]); // liberta a câmara ao sair
+  // liga a câmara ao <video> quando este aparece
+  useEffect(() => {
+    if (!aberta || !video.current || !stream.current) return;
+    video.current.srcObject = stream.current;
+    void video.current.play().catch(() => undefined);
+  }, [aberta]);
+
+  async function abrir() {
+    setErroCamera(null);
+    if (!navigator.mediaDevices?.getUserMedia) return setErroCamera(tv.cameraIndisponivel);
+    try {
+      stream.current = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 } },
+        audio: false,
+      });
+      setAberta(true);
+    } catch (e) {
+      const nome = (e as DOMException).name;
+      setErroCamera(nome === "NotAllowedError" ? tv.cameraNegada : tv.cameraIndisponivel);
+    }
+  }
+
+  function capturar() {
+    const v = video.current;
+    if (!v || !v.videoWidth) return;
+    const c = document.createElement("canvas");
+    c.width = v.videoWidth;
+    c.height = v.videoHeight;
+    c.getContext("2d")!.drawImage(v, 0, 0);
+    c.toBlob(
+      (b) => {
+        if (b) onEscolher(new File([b], `${rotulo.replace(/\W+/g, "-").toLowerCase()}.jpg`, { type: "image/jpeg" }));
+        fechar();
+      },
+      "image/jpeg",
+      0.92,
+    );
+  }
+
   return (
-    <label className="group flex cursor-pointer flex-col gap-2 text-sm">
+    <div className="flex flex-col gap-2 text-sm">
       <span className="font-medium text-fg">{rotulo}</span>
-      <span
-        className={cn(
-          "relative flex h-36 flex-col items-center justify-center gap-2 overflow-hidden rounded border-2 border-dashed px-3 text-center transition-colors",
-          ficheiro ? "border-primary" : "border-line-strong group-hover:border-primary group-hover:bg-surface-2",
-        )}
-      >
-        {ficheiro && previa ? (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={previa} alt="" className="absolute inset-0 size-full object-cover opacity-40" />
-            <span className="relative z-10 max-w-full truncate rounded bg-surface/90 px-2 py-1 text-xs font-medium text-fg">{ficheiro.name}</span>
-            <span className="relative z-10 rounded bg-surface/90 px-2 py-0.5 text-xs text-primary">{textoTrocar}</span>
-          </>
-        ) : (
-          <>
-            <Camera className="size-7 text-primary" />
-            <span className="font-medium text-primary">{textoEscolher}</span>
-          </>
-        )}
-      </span>
-      <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => onEscolher(e.target.files?.[0] ?? null)} />
-    </label>
+
+      {aberta ? (
+        <div className="overflow-hidden rounded border-2 border-primary bg-black">
+          <video ref={video} playsInline muted className="aspect-[3/2] w-full object-cover" />
+          <div className="flex gap-2 bg-surface p-2">
+            <button type="button" className="btn-secundario h-9 flex-1" onClick={fechar}>
+              {tv.cancelarCamera}
+            </button>
+            <button type="button" className="btn-primario h-9 flex-1" onClick={capturar}>
+              <Camera className="size-4" /> {tv.capturar}
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={abrir}
+          className={cn(
+            "group relative flex h-36 flex-col items-center justify-center gap-2 overflow-hidden rounded border-2 border-dashed px-3 text-center transition-colors",
+            ficheiro ? "border-primary" : "border-line-strong hover:border-primary hover:bg-surface-2",
+          )}
+        >
+          {ficheiro && previa ? (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={previa} alt="" className="absolute inset-0 size-full object-cover opacity-40" />
+              <span className="relative z-10 rounded bg-surface/90 px-2 py-1 text-xs font-medium text-fg">{tv.fotoPronta}</span>
+              <span className="relative z-10 rounded bg-surface/90 px-2 py-0.5 text-xs text-primary">{tv.tirarOutra}</span>
+            </>
+          ) : (
+            <>
+              <Camera className="size-8 text-primary" />
+              <span className="font-medium text-primary">{tv.tirarFoto}</span>
+            </>
+          )}
+        </button>
+      )}
+
+      {erroCamera && <p className="text-xs text-danger">{erroCamera}</p>}
+      {!aberta && (
+        <button type="button" className="self-start text-xs text-muted underline-offset-2 hover:text-fg hover:underline" onClick={() => anexo.current?.click()}>
+          {tv.ouAnexar}
+        </button>
+      )}
+      <input ref={anexo} type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" tabIndex={-1} onChange={(e) => onEscolher(e.target.files?.[0] ?? null)} />
+    </div>
   );
 }
 
@@ -281,8 +349,8 @@ export function VerificacaoIdentidade({ inicial, config }: { inicial: Verificaca
         <section className="grid gap-4">
           <p className="text-sm text-muted">{tv.instrDocumento}</p>
           <div className="grid gap-3 sm:grid-cols-2">
-            <SeletorImagem rotulo={tv.frente} ficheiro={frente} onEscolher={setFrente} textoEscolher={tv.escolherFoto} textoTrocar={tv.trocarFoto} />
-            <SeletorImagem rotulo={tv.verso} ficheiro={verso} onEscolher={setVerso} textoEscolher={tv.escolherFoto} textoTrocar={tv.trocarFoto} />
+            <CapturaDocumento rotulo={tv.frente} ficheiro={frente} onEscolher={setFrente} tv={tv} />
+            <CapturaDocumento rotulo={tv.verso} ficheiro={verso} onEscolher={setVerso} tv={tv} />
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="text-xs text-subtle">
