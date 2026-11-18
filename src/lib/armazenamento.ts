@@ -150,7 +150,11 @@ async function garantirRamo() {
     const arvore = await gh(`${API}/repos/${GITHUB_REPO}/git/trees`, {
       method: "POST",
       body: JSON.stringify({
-        tree: [{ path: "README.md", mode: "100644", type: "blob", content: "# Dados do SADEB\n\nRamo gerido automaticamente (DBAT — Data Base As Txt). Não editar à mão.\n" }],
+        tree: [
+          { path: "README.md", mode: "100644", type: "blob", content: "# Dados do SADEB\n\nRamo gerido automaticamente (DBAT — Data Base As Txt). Não editar à mão.\n" },
+          // O Vercel lê a configuração do próprio commit: sem isto cada escrita de dados criaria um deploy (falhado)
+          { path: "vercel.json", mode: "100644", type: "blob", content: '{\n  "$schema": "https://openapi.vercel.sh/vercel.json",\n  "git": { "deploymentEnabled": false }\n}\n' },
+        ],
       }),
     });
     if (!arvore.ok) await erroGh(arvore, "criar árvore inicial");

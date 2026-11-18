@@ -1,7 +1,7 @@
 "use client";
 
-import { CheckCircle2, Circle, IdCard, RotateCcw, ScanFace, UserRound } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Camera, CheckCircle2, Circle, IdCard, RotateCcw, ScanFace, UserRound } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Spinner } from "@/components/carregamento";
 import { useI18n } from "@/components/i18n-provider";
 import { Aviso } from "@/components/ui";
@@ -47,6 +47,52 @@ function carregarScript(src: string) {
     s.onerror = () => erro(new Error("script"));
     document.head.appendChild(s);
   });
+}
+
+/** Caixa clicável para escolher/fotografar uma imagem, com pré-visualização. */
+function SeletorImagem({
+  rotulo,
+  ficheiro,
+  onEscolher,
+  textoEscolher,
+  textoTrocar,
+}: {
+  rotulo: string;
+  ficheiro: File | null;
+  onEscolher: (f: File | null) => void;
+  textoEscolher: string;
+  textoTrocar: string;
+}) {
+  const previa = useMemo(() => (ficheiro ? URL.createObjectURL(ficheiro) : null), [ficheiro]);
+  useEffect(() => () => {
+    if (previa) URL.revokeObjectURL(previa);
+  }, [previa]);
+  return (
+    <label className="group flex cursor-pointer flex-col gap-2 text-sm">
+      <span className="font-medium text-fg">{rotulo}</span>
+      <span
+        className={cn(
+          "relative flex h-36 flex-col items-center justify-center gap-2 overflow-hidden rounded border-2 border-dashed px-3 text-center transition-colors",
+          ficheiro ? "border-primary" : "border-line-strong group-hover:border-primary group-hover:bg-surface-2",
+        )}
+      >
+        {ficheiro && previa ? (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={previa} alt="" className="absolute inset-0 size-full object-cover opacity-40" />
+            <span className="relative z-10 max-w-full truncate rounded bg-surface/90 px-2 py-1 text-xs font-medium text-fg">{ficheiro.name}</span>
+            <span className="relative z-10 rounded bg-surface/90 px-2 py-0.5 text-xs text-primary">{textoTrocar}</span>
+          </>
+        ) : (
+          <>
+            <Camera className="size-7 text-primary" />
+            <span className="font-medium text-primary">{textoEscolher}</span>
+          </>
+        )}
+      </span>
+      <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => onEscolher(e.target.files?.[0] ?? null)} />
+    </label>
+  );
 }
 
 export function VerificacaoIdentidade({ inicial, config }: { inicial: VerificacaoPublica | null; config: Config }) {
@@ -234,17 +280,15 @@ export function VerificacaoIdentidade({ inicial, config }: { inicial: Verificaca
       {estado === "documento" && !ocupado && (
         <section className="grid gap-4">
           <p className="text-sm text-muted">{tv.instrDocumento}</p>
-          <label className="grid gap-1.5 text-sm">
-            <span className="font-medium text-fg">{tv.frente}</span>
-            <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" onChange={(e) => setFrente(e.target.files?.[0] ?? null)} className="text-sm" />
-          </label>
-          <label className="grid gap-1.5 text-sm">
-            <span className="font-medium text-fg">{tv.verso}</span>
-            <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" onChange={(e) => setVerso(e.target.files?.[0] ?? null)} className="text-sm" />
-          </label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <SeletorImagem rotulo={tv.frente} ficheiro={frente} onEscolher={setFrente} textoEscolher={tv.escolherFoto} textoTrocar={tv.trocarFoto} />
+            <SeletorImagem rotulo={tv.verso} ficheiro={verso} onEscolher={setVerso} textoEscolher={tv.escolherFoto} textoTrocar={tv.trocarFoto} />
+          </div>
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="text-xs text-subtle">{v && fmt(tv.tentativas, { n: v.tentativasRestantes.documento })}</span>
-            <button type="button" className="btn-primario h-10 px-5" disabled={!frente} onClick={lerDocumento}>
+            <span className="text-xs text-subtle">
+              {!frente ? tv.seleccioneFrente : v && fmt(tv.tentativas, { n: v.tentativasRestantes.documento })}
+            </span>
+            <button type="button" className="btn-primario h-10 px-5 disabled:cursor-not-allowed disabled:opacity-50" disabled={!frente} onClick={lerDocumento}>
               {tv.lerDocumento}
             </button>
           </div>

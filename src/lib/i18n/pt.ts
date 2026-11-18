@@ -202,6 +202,9 @@ export const pt = {
     dadosBloqueados: "Lidos do documento — não editáveis.",
     aIniciar: "A iniciar…",
     iniciar: "Iniciar verificação",
+    escolherFoto: "Tirar ou escolher fotografia",
+    trocarFoto: "Trocar fotografia",
+    seleccioneFrente: "Escolha primeiro a fotografia da frente do documento.",
   },
   candidato: {
     painel: "Painel",

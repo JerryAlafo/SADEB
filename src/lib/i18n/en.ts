@@ -203,6 +203,9 @@ export const en: Dicionario = {
     dadosBloqueados: "Read from the document — not editable.",
     aIniciar: "Starting…",
     iniciar: "Start verification",
+    escolherFoto: "Take or choose a photo",
+    trocarFoto: "Change photo",
+    seleccioneFrente: "First choose the photo of the front of the document.",
   },
   candidato: {
     painel: "Dashboard",
