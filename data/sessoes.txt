@@ -1,3 +1,4 @@
 {"token":"c9c46be9cd90551df08a774423511ffba07c4a39a56b9e1db0a45a8beceb0390","utilizadorId":"0fdf41af-88ca-4a35-9227-2a1c0a902575","expiraEm":"2026-11-18T23:35:30.819Z","criadaEm":"2026-11-18T11:35:30.819Z"}
 {"token":"9c6513c5ec5d0b5ce648f5fe73419c929f3585f2e683bff4e567b8f8a8d008c3","utilizadorId":"cd7e3715-aadc-4359-aaa2-356fbd72f562","expiraEm":"2026-11-18T23:35:36.557Z","criadaEm":"2026-11-18T11:35:36.557Z"}
 {"token":"ac1407e3488bff66308dd7da02a866554c168accc3faabdbc0e1886754b5cdd3","utilizadorId":"72b980c4-a334-456a-af02-9d2601b761c9","expiraEm":"2026-11-18T23:35:42.425Z","criadaEm":"2026-11-18T11:35:42.425Z"}
+{"token":"94573cebfea1cadf0518fb63e75c53f78c8b97f818970a5ff5b1f2802b9dc91e","utilizadorId":"cd7e3715-aadc-4359-aaa2-356fbd72f562","expiraEm":"2026-11-18T23:36:55.000Z","criadaEm":"2026-11-18T11:36:55.000Z"}
