@@ -120,19 +120,28 @@ function urlConteudo(caminho: string) {
 }
 
 async function gh(url: string, init: RequestInit & { headers?: Record<string, string> } = {}) {
-  const res = await fetch(url, {
-    ...init,
-    cache: "no-store",
-    headers: {
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      "User-Agent": "sadeb-dbat",
-      ...(init.body ? { "Content-Type": "application/json" } : {}),
-      ...init.headers,
-    },
-  });
-  return res;
+  for (let tentativa = 0; ; tentativa++) {
+    const res = await fetch(url, {
+      ...init,
+      cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "sadeb-dbat",
+        ...(init.body ? { "Content-Type": "application/json" } : {}),
+        ...init.headers,
+      },
+    });
+    // Limite secundário do GitHub (muitas escritas seguidas): esperar o indicado e repetir.
+    const limitado = res.status === 429 || (res.status === 403 && (res.headers.get("retry-after") || res.headers.get("x-ratelimit-remaining") === "0"));
+    if (!limitado || tentativa >= 3) return res;
+    const retryAfter = Number(res.headers.get("retry-after"));
+    const reset = Number(res.headers.get("x-ratelimit-reset")) * 1000 - Date.now();
+    const ms = Math.min(20000, retryAfter > 0 ? retryAfter * 1000 : reset > 0 ? reset : 2000 * (tentativa + 1));
+    console.warn(`[DBAT/GitHub] limite de pedidos (${res.status}); nova tentativa em ${Math.round(ms / 1000)} s`);
+    await new Promise((r) => setTimeout(r, ms));
+  }
 }
 
 async function erroGh(res: Response, contexto: string): Promise<never> {

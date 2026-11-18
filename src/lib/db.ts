@@ -61,7 +61,16 @@ async function lerBruto<T>(c: Coleccao): Promise<T[]> {
   return f ? parse<T>(f.conteudo) : [];
 }
 
-const MAX_TENTATIVAS = 6;
+/**
+ * O GitHub aceita um commit de cada vez por ramo: escritas simultâneas (mesmo em ficheiros
+ * diferentes) devolvem 409 e têm de ser repetidas. Com espera exponencial + aleatória
+ * (até ~4 s por tentativa) o total ronda 25 s antes de desistir.
+ */
+const MAX_TENTATIVAS = 12;
+function espera(i: number) {
+  const base = Math.min(4000, 200 * 2 ** i);
+  return base / 2 + Math.random() * base;
+}
 
 /**
  * Leitura-modificação-escrita com controlo de versão: se outra instância gravou
@@ -76,7 +85,7 @@ async function lerModificarEscrever<R>(c: Coleccao, fn: (registos: unknown[]) =>
       return resultado;
     } catch (e) {
       if (!(e instanceof ConflitoVersao) || i >= MAX_TENTATIVAS - 1) throw e;
-      await new Promise((r) => setTimeout(r, 150 * (i + 1) + Math.random() * 200));
+      await new Promise((r) => setTimeout(r, espera(i)));
     }
   }
 }
