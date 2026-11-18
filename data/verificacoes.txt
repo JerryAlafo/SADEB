@@ -1,0 +1,1 @@
+{"id":"8252025e-d629-4590-b888-31952e1b5830","tokenHash":"3861637a60da1befc44c7eb0459c6aa4bea29b28591fedc0aaddd794877bbbe4","estado":"documento","simulado":false,"tentativas":{"documento":0,"liveness":0,"facematch":0},"alertas":[],"criadaEm":"2026-11-18T11:37:47.795Z","actualizadaEm":"2026-11-18T11:37:47.795Z","expiraEm":"2026-11-18T12:37:47.795Z"}
