@@ -32,3 +32,4 @@
 {"id":"a0f80ad7-ee72-45d6-882e-ea5c75594dfa","em":"2026-11-23T16:18:21.343Z","utilizador":"Prof. Arsénio Mindu","accao":"login"}
 {"id":"477ba30f-6eb0-4547-aea8-57156cc7fbe6","em":"2026-11-23T16:59:03.054Z","utilizador":"Joana Matsinhe","accao":"login"}
 {"id":"c981e275-e661-4043-a28a-ef857fb6d6bb","em":"2026-11-23T17:02:59.287Z","utilizador":"Prof. Arsénio Mindu","accao":"login"}
+{"id":"fda696e7-7517-4d40-b3fc-433f88ca8d08","em":"2026-11-23T17:04:40.684Z","utilizador":"Prof. Arsénio Mindu","accao":"calculo","alvo":"Bolsa ESCN — Ciências Náuticas e Rádio (2.º semestre)","detalhe":"8 / 1"}
