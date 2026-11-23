@@ -1,0 +1,1 @@
+{"token":"2cf797637e57e4b1b56ddc03477b40a743f744b8415e902cdfbe64dbb12541e5","utilizadorId":"cd7e3715-aadc-4359-aaa2-356fbd72f562","expiraEm":"2026-11-23T19:23:36.490Z","criadaEm":"2026-11-23T07:23:36.490Z"}
