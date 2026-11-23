@@ -21,3 +21,4 @@
 {"id":"f04b867f-6340-4260-8f6d-fe7137900ff6","em":"2026-11-18T11:50:14.724Z","utilizador":"Administrador do Sistema","accao":"login"}
 {"id":"d9e9baa7-5bc1-478b-a133-0927ec308eef","em":"2026-11-18T11:50:15.892Z","utilizador":"Joana Matsinhe","accao":"login"}
 {"id":"7b318bf3-fff3-455b-afb5-8097bc73e6c1","em":"2026-11-23T07:19:00.645Z","utilizador":"Administrador do Sistema","accao":"login"}
+{"id":"9e516454-9a36-4d61-8dcc-7fea8b0fcbc5","em":"2026-11-23T07:21:45.567Z","utilizador":"Administrador do Sistema","accao":"bolsaActualizada","alvo":"Bolsa de Mérito Social 2027"}
