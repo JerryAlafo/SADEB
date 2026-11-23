@@ -29,3 +29,4 @@
 {"id":"0a4b8716-0691-4914-80a0-bc1bbb71b2b6","em":"2026-11-23T14:48:36.951Z","utilizador":"Administrador do Sistema","accao":"login"}
 {"id":"2046ba99-55ff-4dc1-8e49-b0fa1828fd68","em":"2026-11-23T15:26:51.977Z","utilizador":"CARLOS CLIVE AUCENCIO NGOVENE","accao":"contaCriada","alvo":"carlosngovene2022@gmail.com"}
 {"id":"fb3c813c-eaac-46c0-8102-91ceba7d6c38","em":"2026-11-23T15:53:04.627Z","utilizador":"TERESA SALATIEL FERNANDO","accao":"contaCriada","alvo":"teresangovenengovene@gmail.com"}
+{"id":"a0f80ad7-ee72-45d6-882e-ea5c75594dfa","em":"2026-11-23T16:18:21.343Z","utilizador":"Prof. Arsénio Mindu","accao":"login"}
