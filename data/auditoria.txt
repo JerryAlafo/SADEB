@@ -27,3 +27,4 @@
 {"id":"2ea97fc0-a27e-4a38-b220-1c018af754d9","em":"2026-11-23T07:28:20.646Z","utilizador":"Joana Matsinhe","accao":"login"}
 {"id":"816cf7b9-474f-49a2-bd71-163051c71d95","em":"2026-11-23T08:04:28.619Z","utilizador":"Joana Matsinhe","accao":"login"}
 {"id":"0a4b8716-0691-4914-80a0-bc1bbb71b2b6","em":"2026-11-23T14:48:36.951Z","utilizador":"Administrador do Sistema","accao":"login"}
+{"id":"2046ba99-55ff-4dc1-8e49-b0fa1828fd68","em":"2026-11-23T15:26:51.977Z","utilizador":"CARLOS CLIVE AUCENCIO NGOVENE","accao":"contaCriada","alvo":"carlosngovene2022@gmail.com"}
