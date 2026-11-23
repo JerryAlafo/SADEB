@@ -4,7 +4,8 @@
 // validação no cliente → POST /api/auth/login → sessão criada → redirecciona para o painel do perfil
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { CampoSenha, CampoTexto } from "@/components/campos";
 import { Spinner } from "@/components/carregamento";
 import { useI18n } from "@/components/i18n-provider";
@@ -13,8 +14,12 @@ import { EMAIL_RE, validarSenha } from "@/lib/validacao";
 import { login } from "@/services/auth";
 
 export function FormularioEntrar({ destino }: { destino?: string }) {
-  const { t } = useI18n();
+  const { t, idioma } = useI18n();
   const router = useRouter();
+  // Cloudflare Turnstile: só aparece com NEXT_PUBLIC_TURNSTILE_SITE_KEY definida
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+  const turnstile = useRef<TurnstileInstance | undefined>(undefined);
+  const [captcha, setCaptcha] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errosCampo, setErrosCampo] = useState<{ email?: string; password?: string }>({});
@@ -34,14 +39,21 @@ export function FormularioEntrar({ destino }: { destino?: string }) {
     ev.preventDefault();
     setErro(null);
     if (!validar()) return;
+    if (siteKey && !captcha) {
+      setErro(t.erros.captchaInvalido);
+      return;
+    }
     setCarregando(true);
     try {
-      const r = await login({ email: email.trim(), password, redirect: destino }, t.erros.erroLigacao);
+      const r = await login({ email: email.trim(), password, redirect: destino, turnstileToken: captcha || undefined }, t.erros.erroLigacao);
       router.replace(r.redirect);
       router.refresh();
     } catch (e) {
       setErro((e as Error).message);
       setCarregando(false);
+      // cada token Turnstile só vale uma vez — pedir outro
+      setCaptcha("");
+      turnstile.current?.reset();
     }
   }
 
@@ -78,7 +90,23 @@ export function FormularioEntrar({ destino }: { destino?: string }) {
         {errosCampo.password && <p className="mt-1 px-1 text-xs text-danger">{errosCampo.password}</p>}
       </div>
 
-      <button type="submit" disabled={carregando} className="btn-primario h-11 w-full">
+      {siteKey && (
+        <div className="flex justify-center">
+          <Turnstile
+            ref={turnstile}
+            siteKey={siteKey}
+            options={{ language: idioma === "en" ? "en" : "pt-br", theme: "auto", size: "flexible" }}
+            onSuccess={setCaptcha}
+            onExpire={() => setCaptcha("")}
+            onError={() => {
+              setCaptcha("");
+              setErro(t.auth.captchaErro);
+            }}
+          />
+        </div>
+      )}
+
+      <button type="submit" disabled={carregando || (!!siteKey && !captcha)} className="btn-primario h-11 w-full">
         {carregando ? (
           <>
             <Spinner />

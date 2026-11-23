@@ -14,7 +14,7 @@ async function post<T>(url: string, body: unknown, erroLigacao: string): Promise
   return data;
 }
 
-export async function login(p: { email: string; password: string; redirect?: string }, erroLigacao: string) {
+export async function login(p: { email: string; password: string; redirect?: string; turnstileToken?: string }, erroLigacao: string) {
   return (await post<{ redirect: string }>("/api/auth/login", p, erroLigacao)).data;
 }
 
