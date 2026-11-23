@@ -25,3 +25,4 @@
 {"id":"78080a9d-e96d-4a31-8d94-392e52dfce82","em":"2026-11-23T07:23:37.698Z","utilizador":"Prof. Arsénio Mindu","accao":"login"}
 {"id":"d0c019c8-a586-40e9-83e6-fd026bf95b45","em":"2026-11-23T07:25:44.201Z","utilizador":"Joana Matsinhe","accao":"login"}
 {"id":"2ea97fc0-a27e-4a38-b220-1c018af754d9","em":"2026-11-23T07:28:20.646Z","utilizador":"Joana Matsinhe","accao":"login"}
+{"id":"816cf7b9-474f-49a2-bd71-163051c71d95","em":"2026-11-23T08:04:28.619Z","utilizador":"Joana Matsinhe","accao":"login"}
